@@ -13,8 +13,6 @@ contract UpsidePool {
 
     event Start(address indexed owner, address indexed token, uint256 tokenId, uint256 start, uint256 end);
 
-    address public owner;
-
     struct Competition {
         address token;
         uint256 tokenId;
@@ -25,9 +23,11 @@ contract UpsidePool {
 
     mapping(uint256 => Competition) competition;
 
-    mapping(uint256 => mapping(address => uint256)) competitionDeposits;
+    mapping(uint256 => mapping(address => uint256)) balance;
 
     uint256 private competitionId = 0;
+
+    address public owner;
 
     function depositPrizeAndStart(
         address _token,
@@ -51,18 +51,19 @@ contract UpsidePool {
         emit Start(msg.sender, c.token, c.tokenId, c.start, c.end);
     }
 
-    function deposit(uint256 _competitionId) public payable {
-        require(msg.value > 0, "[UpsidePool]: deposit amount is invalid");
+    function deposit(uint256 _competitionId, uint256 amount) public payable {
+        require(msg.value > 0, "[UpsidePool]: deposit amount is invalid too little");
+        require(msg.value == amount, "[UpsidePool]: deposit amount does not equal msg.value");
 
-        competitionDeposits[_competitionId][msg.sender] = competitionDeposits[_competitionId][msg.sender] + msg.value;
+        balance[_competitionId][msg.sender] = balance[_competitionId][msg.sender] + msg.value;
 
         emit Deposit(msg.sender, _competitionId, msg.value);
     }
 
     function withdraw(uint256 _competitionId, uint256 amount) public {
-        require(competitionDeposits[_competitionId][msg.sender] <= amount, "[UpsidePool]: withdraw amount is invalid");
+        require(balance[_competitionId][msg.sender] <= amount, "[UpsidePool]: withdraw amount is invalid");
 
-        competitionDeposits[_competitionId][msg.sender] = competitionDeposits[_competitionId][msg.sender] - amount;
+        balance[_competitionId][msg.sender] = balance[_competitionId][msg.sender] - amount;
 
         payable(msg.sender).transfer(amount);
 
