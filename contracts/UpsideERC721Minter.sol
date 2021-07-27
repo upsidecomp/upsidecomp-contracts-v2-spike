@@ -11,7 +11,7 @@ contract UpsideERC721Minter is ERC721, ERC721Enumerable, ERC721URIStorage, Ownab
 
     string public constant IPFS_HASH = "QmWS694ViHvkTms9UkKqocv1kWDm2MTQqYEJeYi6LsJbxK";
 
-    uint256 public constant ETH_PRICE = 0.01 ether;
+    uint256 public constant ETH_PRICE = 1 ether;
     uint256 public constant MAX_PER_TX = 20;
     uint256 public constant MAX_SUPPLY = 10000;
 

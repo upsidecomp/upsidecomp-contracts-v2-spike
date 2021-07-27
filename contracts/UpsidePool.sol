@@ -3,8 +3,9 @@ pragma solidity ^0.8.0;
 
 import "@openzeppelin/contracts/token/ERC721/IERC721.sol";
 import "@openzeppelin/contracts/utils/math/SafeMath.sol";
+import "@openzeppelin/contracts/token/ERC721/utils/ERC721Holder.sol";
 
-contract UpsidePool {
+contract UpsidePool is ERC721Holder {
     using SafeMath for uint256;
 
     event Deposit(address indexed depositer, uint256 competitionId, uint256 amount);
@@ -68,6 +69,10 @@ contract UpsidePool {
         payable(msg.sender).transfer(amount);
 
         emit Withdraw(msg.sender, _competitionId, amount);
+    }
+
+    function getCompetitionBalance(uint256 _competitionId, address user) public view returns (uint256) {
+        return balance[_competitionId][user];
     }
 
     constructor() {
