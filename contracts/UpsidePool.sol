@@ -54,7 +54,7 @@ contract UpsidePool {
     function deposit(uint256 _competitionId) public payable {
         require(msg.value > 0, "[UpsidePool]: deposit amount is invalid");
 
-        competitionDeposits[_competitionId][msg.sender] = msg.value;
+        competitionDeposits[_competitionId][msg.sender] = competitionDeposits[_competitionId][msg.sender] + msg.value;
 
         emit Deposit(msg.sender, _competitionId, msg.value);
     }
