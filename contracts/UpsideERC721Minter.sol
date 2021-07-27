@@ -22,7 +22,7 @@ contract UpsideERC721Minter is ERC721, ERC721Enumerable, ERC721URIStorage, Ownab
 
     event Minted(address to, uint256 quantity);
 
-    constructor() ERC721("PUNKS Comic", "COMIC") {
+    constructor() ERC721("Upside Spike NFT", "UP-NFT") {
         upside_vault = payable(msg.sender);
     }
 
